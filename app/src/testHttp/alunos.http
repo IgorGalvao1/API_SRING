@@ -12,3 +12,6 @@ Content-Type: application/json
 {
     "nome": "Igor Galvão"
 }
+
+###
+GET {{baseUrl}}/alunos/1

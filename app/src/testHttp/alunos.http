@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{baseUrl}}/alunos/1 
+DELETE {{baseUrl}}/alunos/7

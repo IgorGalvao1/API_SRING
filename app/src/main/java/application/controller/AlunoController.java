@@ -27,7 +27,7 @@ public class AlunoController {
     public Iterable<Aluno> list() {
         return alunoRepo.findAll();
     }
-    
+
     @PostMapping
     public Aluno insert(@RequestBody Aluno aluno) {
         return alunoRepo.save(aluno);
@@ -37,19 +37,28 @@ public class AlunoController {
     @GetMapping("/{id}")
     public Aluno details(@PathVariable long id) {
         Optional<Aluno> resultado = alunoRepo.findById(id);
-        if(resultado.isEmpty()) {
+        if (resultado.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Aluno Não Encontrado"
-            );
+                    HttpStatus.NOT_FOUND, "Aluno Não Encontrado");
         }
         return resultado.get();
     }
 
     @PutMapping("/{id}")
     public Aluno put(
-        @PathVariable long id,
-        @RequestBody Aluno novosDados) {
+            @PathVariable long id,
+            @RequestBody Aluno novosDados) {
         Optional<Aluno> resultado = alunoRepo.findById(id);
+
+        if (resultado.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Aluno Não Encontrado");
+        }
+
+        if (novosDados.getNome().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Nome de ALuno Inválido");
+        }
 
         resultado.get().setNome(novosDados.getNome());
 
@@ -59,6 +68,11 @@ public class AlunoController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
+        if (!alunoRepo.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Aluno Não Encontrado");
+        }
+
         alunoRepo.deleteById(id);
     }
 
